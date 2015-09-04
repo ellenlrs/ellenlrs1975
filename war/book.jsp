@@ -1,15 +1,56 @@
-<%@ page language="java" contentType="text/html; charset=BIG5"
-    pageEncoding="BIG5"%>
+<%@ page language="java" contentType="text/html; charset=UTF8" pageEncoding="UTF8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=BIG5">
+<meta http-equiv="Content-Type" content="text/html; UTF8">
     <title>Books API Example</title>
+    	<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
   </head>
-  <body>
-    <div id="content"></div>
-     <div id="content2"></div>
-    <script>
+<body id="top">
+    <!--
+    <script src="https://www.googleapis.com/books/v1/users/105012179748179149683/bookshelves/1001?callback=handleResponse2"></script>
+  -->
+
+  <section id="four" class="wrapper">
+				<div class="inner">
+					<header class="major">
+						<h2>Google Book Search</h2>
+					</header>
+					<section>
+					 <form action="/book.jsp" method="GET">
+				       Book Search: <input type="text" name="q">
+				        <input type="submit" value="Submit" />
+				      </form>
+						<h5>Results:</h5>
+						<pre><code> 
+							 <div id="content"></div>
+					     </code></pre>
+					</section>
+				</div>
+			</section>
+		<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+				</ul>
+				<p class="copyright">&copy;  <a href="/">ellenlrs1975</a></p>
+			</footer>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+			
+			 <script>
       function handleResponse(response) {
       for (var i = 0; i < response.items.length; i++) {
         var item = response.items[i];
@@ -28,7 +69,13 @@
         //  }
         }
     </script>
-    <script src="https://www.googleapis.com/books/v1/volumes?q=harry+potter&callback=handleResponse"></script>
-    <script src="https://www.googleapis.com/books/v1/users/105012179748179149683/bookshelves/1001?callback=handleResponse2"></script>
-  </body>
+    <%
+      if(null!=request.getParameter("q")){
+    %>
+    <script src="https://www.googleapis.com/books/v1/volumes?q=<%=request.getParameter("q") %>&callback=handleResponse"></script>
+    <%
+      }
+    %>
+
+	</body>
 </html>
