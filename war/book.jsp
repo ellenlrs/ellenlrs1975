@@ -23,13 +23,17 @@
 					</header>
 					<section>
 					 <form action="/book.jsp" method="GET">
-				       Book Search: <input type="text" name="q">
-				        <input type="submit" value="Submit" />
+				       Book Search: 
+				       <div class="6u 12u$(xsmall)">
+									<input type="text" name="q" id="q" value="" placeholder="Book Name" />
+									<ul class="actions small">
+									<li><input type="submit" value="Submit"  class="button special small"/></li>
+								</ul>
+								</div>
+				      
 				      </form>
 						<h5>Results:</h5>
-						<pre><code> 
 							 <div id="content"></div>
-					     </code></pre>
 					</section>
 				</div>
 			</section>
@@ -55,8 +59,10 @@
       for (var i = 0; i < response.items.length; i++) {
         var item = response.items[i];
         // in production code, item.text should have the HTML entities escaped.
-        document.getElementById("content").innerHTML += "<br>" + item.volumeInfo.title;
-        document.getElementById("content").innerHTML += "<br>" + item.volumeInfo.description+"<br><HR>";
+       // document.getElementById("content").innerHTML += "<br>" + item.volumeInfo.title;
+        //document.getElementById("content").innerHTML += "<br>" + item.volumeInfo.description+"<br><HR>";
+          document.getElementById("content").innerHTML += "<pre><code>" + item.volumeInfo.title + "<br>" + item.volumeInfo.description+"<br></code></pre>";
+         
       }
     }
       function handleResponse2(response) {
