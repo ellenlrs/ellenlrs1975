@@ -32,9 +32,7 @@
 								</div>
 				      
 				      </form>
-						<h4>Results:</h4>
 							 <div id="content"></div>
-							 <div id="isbn"></div>
 					</section>
 				</div>
 			</section>
@@ -55,31 +53,51 @@
 				  	    format: "json"
 				  	  })
 				  	    .done(function( response ) {
-				  	    	//console.log(response)
+				  	    	console.log(response)
 				  	      $.each( response.items, function( i, item ) {
 				  	    	  $.each(item , function(applier, a_val){
 				  	                // $('#isbn').append('key:'+applier+' , value:'+a_val+'<br/>');
+						
+				  	                
+				  	                if(applier=='volumeInfo'){
+				  	                 	$.each(a_val , function(applier2, b_val){
+				  	                 		if(applier2=='title'){
+				  	                			$('#content').append('<h4>'+b_val+'</h4><br/>');
+				  	                		}
+				  	                 		if(applier2=='imageLinks'){
+				  	     	                 	$.each(b_val , function(imageLinks, smallThumbnail){
+				  	     	                		if(imageLinks=='smallThumbnail'){
+		 	    	     	                			// $('#content').append('<span class=image><img src='+smallThumbnail+'  width=80 height=100></span>');
+				  	     	                		 $('#content').append('<p><span class=\'image left\'><img src='+smallThumbnail+'  ></span>');
+				  	    	     	                }
+				  	     	                 	});
+				  	     	                 }
+				  	                 		
+				  	                 	});
+		  	     	                 }
+				  	                
+				  	                
 				  	                 if(applier=='volumeInfo'){
 				  	                 	$.each(a_val , function(applier2, b_val){
-				  	                		if(applier2=='title'){
-				  	                			$('#content').append('<h5>Book Title:'+b_val+'</h5><br/>');
-				  	                		}
+				  	                		//if(applier2=='title'){
+				  	                			//$('#content').append('<h4>'+b_val+'</h4><br/>');
+				  	                		//}
 				  	                		if(applier2=='description'){
-				  	                			$('#content').append('<blockquote>Description:'+b_val+'</blockquote><br/>');
+				  	                			//$('#content').append('<blockquote>Book Description:<br/>'+b_val+'</blockquote><br/>');
+				  	                			$('#content').append('Book Description:<br/>'+b_val+'</p>');
 				  	                		}
 				  	                		 if(applier2=='industryIdentifiers'){
 					  	     	                 	$.each(b_val , function(applier3, c_val){
 					  	     	                		if(applier3=='0'){
 					  	    	     	                 	$.each(c_val , function(applier4, isbn){
 					  	    	     	                		 if(applier4=='identifier'){
-					  	    	     	                			 $('#content').append('<ul class=actions><li><a href=/googlebook/embedviewer.jsp?isbn='+isbn+' class=button icon fa-chevron-down scrolly>View Content</a></li></ul><br/>');
+					  	    	     	                			 $('#content').append('<ul class=actions><li><a href=/googlebook/embedviewer.jsp?isbn='+isbn+' class=button icon fa-chevron-down scrolly>Google Preview</a></li></ul><br/>');
 					  	    	     	                		 }
 					  	    	     	                 	});
 					  	    	     	                 	
 					  	    	     	                 }
 					  	     	                 	});
 					  	     	                 }
-				  	                		
 				  	                 	});
 				  	                 }
 				  	             });
