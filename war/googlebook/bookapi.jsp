@@ -25,15 +25,16 @@
 					 <form action="/googlebook/bookapi.jsp" method="GET">
 				       <h4>Book Search:</h4> 
 				       <div class="6u 12u$(xsmall)">
-									<input type="text" name="q" id="q" value="" placeholder="Book Name" />
-									<ul class="actions small">
-									<li><input type="submit" value="Submit"  class="button special small"/></li>
-								</ul>
+									<input type="text" name="q" id="q" value="" placeholder="Book Name" /><BR>
+									<ul class="actions vertical small">
+										<li><input type="submit" value="Submit"  class="button special small fit"/></li>
+									</ul>
 								</div>
 				      
 				      </form>
 						<h4>Results:</h4>
 							 <div id="content"></div>
+							 <div id="isbn"></div>
 					</section>
 				</div>
 			</section>
@@ -48,22 +49,44 @@
 			<script src="../assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="../assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="../assets/js/main.js"></script>
-			
 			 <script>
-      function handleResponse(response) {
-      for (var i = 0; i < response.items.length; i++) {
-        var item = response.items[i];
-        // in production code, item.text should have the HTML entities escaped.
-       // document.getElementById("content").innerHTML += "<br>" + item.volumeInfo.title;
-        //document.getElementById("content").innerHTML += "<br>" + item.volumeInfo.description+"<br><HR>";
-         //document.getElementById("content").innerHTML += "<a href='"+item.imageLinks.smallThumbnail+"'>Image</a><br>";
-        document.getElementById("content").innerHTML += "<h5>" + item.volumeInfo.title + "<br></h5>";
-          document.getElementById("content").innerHTML += "<blockquote>"  + item.volumeInfo.description+"<br></blockquote>";
-         
-         
-      }
-    }
-    </script>
+			      function handleResponse(response) {
+				      $.getJSON( "https://www.googleapis.com/books/v1/volumes?q=<%=request.getParameter("q") %>", {
+				  	    format: "json"
+				  	  })
+				  	    .done(function( response ) {
+				  	    	//console.log(response)
+				  	      $.each( response.items, function( i, item ) {
+				  	    	  $.each(item , function(applier, a_val){
+				  	                // $('#isbn').append('key:'+applier+' , value:'+a_val+'<br/>');
+				  	                 if(applier=='volumeInfo'){
+				  	                 	$.each(a_val , function(applier2, b_val){
+				  	                		if(applier2=='title'){
+				  	                			$('#content').append('<h5>Book Title:'+b_val+'</h5><br/>');
+				  	                		}
+				  	                		if(applier2=='description'){
+				  	                			$('#content').append('<blockquote>Description:'+b_val+'</blockquote><br/>');
+				  	                		}
+				  	                		 if(applier2=='industryIdentifiers'){
+					  	     	                 	$.each(b_val , function(applier3, c_val){
+					  	     	                		if(applier3=='0'){
+					  	    	     	                 	$.each(c_val , function(applier4, isbn){
+					  	    	     	                		 if(applier4=='identifier'){
+					  	    	     	                			 $('#content').append('<ul class=actions><li><a href=/googlebook/embedviewer.jsp?isbn='+isbn+' class=button icon fa-chevron-down scrolly>View Content</a></li></ul><br/>');
+					  	    	     	                		 }
+					  	    	     	                 	});
+					  	    	     	                 	
+					  	    	     	                 }
+					  	     	                 	});
+					  	     	                 }
+				  	                		
+				  	                 	});
+				  	                 }
+				  	             });
+				  	      });
+				  	    });
+			      }
+   			 </script>
     <%
       if(null!=request.getParameter("q")){
     %>
